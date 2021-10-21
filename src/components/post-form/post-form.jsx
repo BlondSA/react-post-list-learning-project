@@ -18,7 +18,7 @@ function PostForm({ create, remove }) {
                 value={post.title}
                 type="text"
                 onChange={(e) => setPost({ ...post, title: e.target.value })}
-                placeholder="Назваение поста"
+                placeholder="Название поста"
             ></MyInput>
             <MyInput
                 value={post.description}

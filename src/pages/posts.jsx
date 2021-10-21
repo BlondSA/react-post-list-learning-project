@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/app.css";
+import "../styles/App.css";
 import PostList from "../components/post-list/post-list";
 import PostForm from "../components/post-form/post-form";
 import PostFilter from "../components/post-filter/post-filter";

@@ -7,7 +7,7 @@ import Loader from "../components/UI/loader/loader";
 const PostIdPage = () => {
     const params = useParams();
     const [post, setPost] = useState({});
-    const [comments, setComments] = useState({});
+    const [comments, setComments] = useState([]);
 
     const [fetchPostById, isLoading, error] = useFetching(async (id) => {
         const response = await PostService.getById(id);
@@ -16,7 +16,7 @@ const PostIdPage = () => {
 
     const [fetchComments, isCommentsLoading, commentsError] = useFetching(
         async (id) => {
-            const response = await PostService.getByI(id);
+            const response = await PostService.getCommentsByPostId(id);
             setComments(response.data);
         }
     );
@@ -26,8 +26,6 @@ const PostIdPage = () => {
         fetchComments(params.id);
     }, []);
 
-    console.log(comments);
-
     return (
         <div>
             <h1>Вы попали на страницу поста c ID = {params.id}</h1>
@@ -35,7 +33,7 @@ const PostIdPage = () => {
                 <Loader />
             ) : (
                 <div>
-                    {post.id}.{post.title}
+                    {post.id}. {post.title}
                 </div>
             )}
             <h1>Комментарии</h1>
@@ -43,10 +41,13 @@ const PostIdPage = () => {
                 <Loader />
             ) : (
                 <div>
-                    {comments.map((comment) => (
-                        <div>
-                            <h5>{comment.email}</h5>
-                            <div>{comment.body}</div>
+                    {comments.map((comment, index) => (
+                        <div style={{ marginTop: "15px" }} key={index}>
+                            <h5>
+                                {index + 1}. {comment.email}
+                            </h5>
+                            <span>Name: {comment.name}</span>
+                            <div>Message: {comment.body}</div>
                         </div>
                     ))}
                 </div>
