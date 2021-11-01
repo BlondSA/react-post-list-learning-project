@@ -11,12 +11,15 @@ import Loader from "../components/UI/loader/loader";
 import useFetching from "../hooks/use-fetching";
 import { getPageCount } from "../utils/pages";
 import Pagination from "../components/UI/pagination/pagination";
+import Login from "./login";
 
 function Posts() {
     const [posts, setPosts] = useState([]);
+    const [users, setUsers] = useState([]);
 
     const [filter, setFilter] = useState({ sort: "", query: "" });
     const [modal, setModal] = useState(false);
+    const [userModal, setUserModal] = useState(false);
     const [totalPages, setTotalPages] = useState(0);
     const [limit] = useState(10);
     const [page, setPage] = useState(1);
@@ -46,6 +49,12 @@ function Posts() {
         setPosts(posts.filter((p) => p.id !== post.id));
     }
 
+    function createUser(newUser) {
+        // setUsers(users.concat(newUser));
+        setUsers([...users, newUser]);
+        setUserModal(false);
+    }
+
     const changePage = (page) => {
         setPage(page);
         fetchPosts(limit, page);
@@ -53,9 +62,20 @@ function Posts() {
 
     return (
         <div className="app">
+            <MyButton onClick={() => setUserModal(true)}>
+                Создать пользователя
+            </MyButton>
+            <MyModal visible={userModal} setVisible={setUserModal}>
+                <Login createUser={createUser} />
+            </MyModal>
             <PostFilter filter={filter} setFilter={setFilter} />
             {postError && <h1>Произошла ошибка: {postError}</h1>}
-            {isPostsLoading ? (
+            <PostList
+                remove={removePost}
+                posts={sortedAndSearchedPosts}
+                title={"Список постов"}
+            />
+            {isPostsLoading && (
                 <div
                     style={{
                         display: "flex",
@@ -65,12 +85,6 @@ function Posts() {
                 >
                     <Loader />
                 </div>
-            ) : (
-                <PostList
-                    remove={removePost}
-                    posts={sortedAndSearchedPosts}
-                    title={"Список постов"}
-                />
             )}
             <hr style={{ margin: "15px 0" }} />
             <MyButton onClick={() => setModal(true)}>Создать пост</MyButton>

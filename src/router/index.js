@@ -1,9 +1,10 @@
 import About from "../pages/about";
 import Posts from "../pages/posts";
-import Error from "../pages/error";
 import PostIdPage from "../pages/post-id-page";
+import Error from "../pages/error";
+import Login from "../pages/login";
 
-const routes = [
+const privateRoutes = [
     {
         component: Posts,
         exact: true,
@@ -25,5 +26,6 @@ const routes = [
         path: "/error",
     },
 ];
+const publicRoutes = [{ component: Login, path: "/login", exact: true }];
 
-export { routes };
+export { privateRoutes, publicRoutes };
